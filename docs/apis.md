@@ -156,8 +156,7 @@ Content-Type: application/json
 
 | 参数名称 | 必选 | 类型 | 描述 |
 | ---- | ---- | ---- | ---- | 
-| file | 是 | Binary | 媒体文件 |
-| video | 否 | String | 视频ID |
+| files | 是 | Binary | 媒体文件 |
 
 * 请求示例
 

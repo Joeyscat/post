@@ -1,0 +1,31 @@
+[
+  {
+    "_id": "93b4b0e9-0ce6-4760-b037-05e76e9cb1f2",
+    "colId": "history",
+    "containerId": "",
+    "name": "http://localhost:8000/medias/upload",
+    "url": "http://localhost:8000/medias/upload",
+    "method": "POST",
+    "sortNum": 0,
+    "created": "2023-01-03T13:23:28.148Z",
+    "modified": "2023-01-03T13:25:20.524Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "formdata",
+      "raw": "",
+      "form": [],
+      "files": [
+        {
+          "name": "files",
+          "value": "../../README.md"
+        },
+        {
+          "name": "files",
+          "value": "../../Makefile"
+        }
+      ]
+    },
+    "tests": []
+  }
+]
