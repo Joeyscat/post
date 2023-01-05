@@ -36,9 +36,9 @@ type Media struct {
 }
 
 type Comment struct {
-	UserId
-	Content string
-	Time    int64 // 发布时间
+	UserId  UserId `json:"userId,omitempty" genji:"userId"`
+	Content string `json:"content,omitempty" genji:"content"`
+	Time    int64  `json:"time,omitempty" genji:"time"` // 发布时间
 }
 
 // 用户

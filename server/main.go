@@ -42,7 +42,7 @@ func main() {
 	e.GET("/medias/:id", h.mediaDetail)
 	e.GET("/medias", h.mediaList)
 
-	e.Logger.Fatal(e.Start(":8000"))
+	e.Logger.Fatal(e.Start(":6000"))
 }
 
 func customHTTPErrorHandler(err error, c echo.Context) {

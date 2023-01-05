@@ -9,6 +9,7 @@ import (
 	"github.com/genjidb/genji/document"
 	"github.com/genjidb/genji/types"
 	"github.com/labstack/echo/v4"
+	"go.uber.org/zap"
 )
 
 func (h *handler) postList(c echo.Context) error {
@@ -79,6 +80,8 @@ func (h *handler) postCreate(c echo.Context) error {
 		Medias: []*MediaId{},
 		Time:   time.Now().Unix(),
 	}
+	h.lg.Debug("creating post", zap.Any("post", post))
+
 	if p.Content != nil {
 		post.Content = *p.Content
 	} else {
@@ -152,11 +155,12 @@ func (h *handler) postComment(c echo.Context) error {
 		return badRequestError(c, fmt.Sprintf("bad request: %s", err.Error()))
 	}
 
-	newComment := &Comment{
+	newComment := Comment{
 		UserId:  user.Id,
 		Content: *p.Content,
 		Time:    time.Now().Unix(),
 	}
+	h.lg.Debug("new comment for post", zap.Any("comment", newComment), zap.String("postId", id))
 
 	db := h.db.WithContext(c.Request().Context())
 
@@ -181,8 +185,8 @@ func (h *handler) postComment(c echo.Context) error {
 		return internalServerError(c, fmt.Sprintf("scan fields error: %s", err.Error()))
 	}
 
-	post.Comments = append(post.Comments, newComment)
-	err = db.Exec("UPDATE post SET comments = ?", post.Comments)
+	post.Comments = append(post.Comments, &newComment)
+	err = tx.Exec("UPDATE post SET comments = ? WHERE id = ?", post.Comments, post.Id)
 	if err != nil {
 		return internalServerError(c, fmt.Sprintf("append comment error: %s", err.Error()))
 	}
@@ -202,6 +206,7 @@ func (h *handler) postDelete(c echo.Context) error {
 	}
 
 	id := c.Param("id")
+	h.lg.Debug("deleting post", zap.Any("postId", id))
 
 	db := h.db.WithContext(c.Request().Context())
 	_, err = db.QueryDocument("SELECT id FROM post WHERE id = ? AND userId = ?", id, user.Id)
